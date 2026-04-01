@@ -8,7 +8,10 @@ int main(int argc, char** argv){
 
     vector<connectionStruct> connections = readConnectionFile("connections_princeton.csv", "GNG");
 
-    adjMat object(connections.size());
+    adjMat object(connections);
+
+    object.makeMatrix(connections);
+
 
     return 0;
 }

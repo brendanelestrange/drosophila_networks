@@ -9,17 +9,22 @@
 
 using namespace std;
 
-struct connectionStruct;
+struct connectionStruct{
+    int pre_root;
+    int post_root;
+    // string neuropil; needed only for filtering
+    ushort weight;
+};
 vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil);
 
 class adjMat {
     private:
         int N;
-        vector<vector<int>> adj_mat;
+        vector<vector<int>> mat;
     public:
-        adjMat(int);
-        void makeMatrix(string, string);
-        void remapNodes(vector<connectionStruct> &connections);
+        adjMat(vector<connectionStruct> &connections);
+        int remapNodes(vector<connectionStruct> &connections);
+        void makeMatrix(vector<connectionStruct> &connections);
         void findCycles(int);
         void prettyPrint();
 

@@ -1,23 +1,21 @@
 #include "adjacency.h"
 
-// struct for processing
-struct connectionStruct;
-
-// function for reading file
+// function for reading file defined below class functions
 vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil);
 
-adjMat::adjMat(int size) { 
-    N = size;
-    adj_mat.resize(N, vector<int>(N, 0));
+adjMat::adjMat(vector<connectionStruct> &connections) { 
+    N = remapNodes(connections);
+    // N = connections.size();
+    mat.resize(N, vector<int>(N, 0));
 }
 
-void adjMat::remapNodes(vector<connectionStruct> &connections) {
+int adjMat::remapNodes(vector<connectionStruct> &connections) {
     // get all nodes
     vector<int> nodes;
     for (int i = 0; i < connections.size(); i++) {
         
-        nodes.push_back(stoi(connections[i].pre_root));
-        nodes.push_back(stoi(connections[i].post_root));
+        nodes.push_back(connections[i].pre_root);
+        nodes.push_back(connections[i].post_root);
     }
     // save all unique nodes with a map
     map<int, int> unique;
@@ -38,33 +36,29 @@ void adjMat::remapNodes(vector<connectionStruct> &connections) {
 
         auto it1 = unique.find(connections[i].post_root);
         if (it1 != unique.end()) {
-            connections[i].post_root = it->second;
+            connections[i].post_root = it1->second;
         }
     }
 
+    return count;
 }; 
 
-void adjMat::makeMatrix(string filename, string filter_neuropil) {
-    vector<connectionStruct> connections = readConnectionFile(filename, filter_neuropil);
-
+void adjMat::makeMatrix(vector<connectionStruct> &connections) {
     
-
-    for (int i = 0; i < connections.size(); i++) {
-        // nodes.push_back(connections[i].pre_root)
-
+    for (int i = 0; i < connections.size(); i++) { 
+        mat[connections[i].pre_root][connections[i].post_root] = connections[i].weight;
     }
+    
+    // here we get an INCREDIBLY sparse matrix.
 
 }
 
 
-struct connectionStruct{
-    string pre_root;
-    string post_root;
-    // string neuropil; needed only for filtering
-    ushort weight;
-};
 
 
+
+
+// helper
 vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil) {
     //Open file as input filestream. Will parse using string stream
     ifstream fin(filename);
@@ -98,12 +92,11 @@ vector<connectionStruct> readConnectionFile(string filename, string filter_neuro
         getline(ss, neuropil, ',');
         getline(ss, weight_str, ',');
         if (neuropil != filter_neuropil) {
-            cout << "awesome" << endl;
             continue;
         }
         //Change values for struct variables
-        cs.pre_root = pre_root;
-        cs.post_root = post_root;
+        cs.pre_root = stoul(pre_root);
+        cs.post_root = stoul(post_root);
         // cs.neuropil = neuropil; needed only for filtering
         cs.weight = static_cast<ushort> (stoi(weight_str));
 
