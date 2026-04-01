@@ -5,7 +5,6 @@ vector<connectionStruct> readConnectionFile(string filename, string filter_neuro
 
 adjMat::adjMat(vector<connectionStruct> &connections) { 
     N = remapNodes(connections);
-    // N = connections.size();
     mat.resize(N, vector<int>(N, 0));
 }
 
@@ -52,11 +51,6 @@ void adjMat::makeMatrix(vector<connectionStruct> &connections) {
     // here we get an INCREDIBLY sparse matrix.
 
 }
-
-
-
-
-
 
 // helper
 vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil) {
