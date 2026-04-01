@@ -17,6 +17,7 @@ struct connectionStruct{
 };
 vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil);
 
+// adjacency matrix (made by brendan lestrange)
 class adjMat {
     private:
         int N;

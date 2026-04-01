@@ -52,7 +52,7 @@ void adjMat::makeMatrix(vector<connectionStruct> &connections) {
 
 }
 
-// helper
+// csv reader (made by matt bales)
 vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil) {
     //Open file as input filestream. Will parse using string stream
     ifstream fin(filename);
