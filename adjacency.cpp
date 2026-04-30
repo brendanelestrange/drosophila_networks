@@ -6,6 +6,7 @@ vector<connectionStruct> readConnectionFile(string filename, string filter_neuro
 adjMat::adjMat(vector<connectionStruct> &connections) { 
     N = remapNodes(connections);
     mat.resize(N, vector<int>(N, 0));
+    list.resize(N, vector<pair<int,int>>());
 }
 
 int adjMat::remapNodes(vector<connectionStruct> &connections) {
@@ -20,7 +21,7 @@ int adjMat::remapNodes(vector<connectionStruct> &connections) {
     map<int, int> unique;
     int count = 0;
     for (int i = 0; i < nodes.size(); i++) {
-        if (unique.contains(nodes[i])) continue;
+        if (unique.find(nodes[i]) != unique.end()) continue;
         unique[nodes[i]] = count;
         count++;
     }
@@ -50,6 +51,31 @@ void adjMat::makeMatrix(vector<connectionStruct> &connections) {
     
     // here we get an INCREDIBLY sparse matrix.
 
+}
+
+void adjMat::makeList(vector<connectionStruct> &connections) {
+    for (int i = 0; i < connections.size(); i++) {
+        int source = connections[i].pre_root;
+        int destination = connections[i].post_root;
+        int weight = connections[i].weight;
+        list[source].push_back({destination, weight});
+    }
+}
+
+void adjMat::printList(){ 
+    // also saves to txt
+    ofstream file("adjlist.txt");
+    for (int i = 0; i < list.size(); i++) {
+        cout << i << " : ";
+        file << i << " : "; 
+        for (int j = 0; j < list[i].size(); j++) {
+            cout << "{"<<list[i][j].first<<", "<<list[i][j].second<<"} ";
+            file << "{"<<list[i][j].first<<", "<<list[i][j].second<<"} ";
+        }
+        cout << endl;
+        file << endl;
+    }
+    file.close();
 }
 
 // csv reader (made by matt bales)

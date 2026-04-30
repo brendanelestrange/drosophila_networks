@@ -17,16 +17,21 @@ struct connectionStruct{
 };
 vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil);
 
-// adjacency matrix (made by brendan lestrange)
+// adjacency matrix (made by brendan lestrange and matt)
 class adjMat {
     private:
         int N;
-        vector<vector<int>> mat;
+        vector<vector<pair<int,int>>> list; // stores adj list
+        vector<vector<int>> mat; // stores adj matrix
+        vector<int> cycles; // stores vertex values of cycles
     public:
         adjMat(vector<connectionStruct> &connections);
         int remapNodes(vector<connectionStruct> &connections);
         void makeMatrix(vector<connectionStruct> &connections);
-        void findCycles(int);
+        void makeList(vector<connectionStruct> &connections);
+        void printList();
+        void findCyclesDFS(int); // 
+        void findCyclesBFS(int); // 
         void prettyPrint();
 
 };

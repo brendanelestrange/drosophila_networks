@@ -10,8 +10,9 @@ int main(int argc, char** argv){
 
     adjMat object(connections);
 
-    object.makeMatrix(connections);
+    object.makeList(connections);
 
+    object.printList();
 
     return 0;
 }
