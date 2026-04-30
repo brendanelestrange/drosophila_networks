@@ -6,7 +6,7 @@ using namespace std;
 
 int main(int argc, char** argv){
 
-    vector<connectionStruct> connections = readConnectionFile("connections_princeton.csv", "GNG");
+    vector<connectionStruct> connections = readConnectionFile("../connections_princeton.csv", "GNG");
 
     adjMat object(connections);
 

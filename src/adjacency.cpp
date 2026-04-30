@@ -65,7 +65,7 @@ void adjMat::makeList(vector<connectionStruct> &connections) {
 // prints list and also makes txt file (bc full list can't load in terminal)
 void adjMat::printList(){ 
     // also saves to txt
-    ofstream file("adjlist.txt");
+    ofstream file("../outputs/adj_list.txt");
     for (int i = 0; i < list.size(); i++) {
         cout << i << " : ";
         file << i << " : "; 
