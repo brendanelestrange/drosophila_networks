@@ -62,6 +62,7 @@ void adjMat::makeList(vector<connectionStruct> &connections) {
     }
 }
 
+// prints list and also makes txt file (bc full list can't load in terminal)
 void adjMat::printList(){ 
     // also saves to txt
     ofstream file("adjlist.txt");
@@ -76,6 +77,15 @@ void adjMat::printList(){
         file << endl;
     }
     file.close();
+}
+
+
+void findCyclesDFS(int length) {
+    
+}
+
+void findCyclesBFS(int length) {
+
 }
 
 // csv reader (made by matt bales)

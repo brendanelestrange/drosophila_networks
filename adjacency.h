@@ -23,15 +23,15 @@ class adjMat {
         int N;
         vector<vector<pair<int,int>>> list; // stores adj list
         vector<vector<int>> mat; // stores adj matrix
-        vector<int> cycles; // stores vertex values of cycles
+        vector<vector<int>> cycles; // stores vertex values of cycles
     public:
         adjMat(vector<connectionStruct> &connections);
         int remapNodes(vector<connectionStruct> &connections);
         void makeMatrix(vector<connectionStruct> &connections);
         void makeList(vector<connectionStruct> &connections);
         void printList();
-        void findCyclesDFS(int); // 
-        void findCyclesBFS(int); // 
+        void findCyclesDFS(int); // records cycles of given length using DFS
+        void findCyclesBFS(int); // records cycles of given length using BFS
         void prettyPrint();
 
 };

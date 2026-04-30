@@ -1,7 +1,10 @@
 ### Drosophila Networks
 
-This is a project for COSC 202 and uses the following sources heavily:
+This is a project for COSC 202 and uses the following sources heavily: \
 
+blah blah something about fly brains
+
+\
 
 We run the code with 
 
