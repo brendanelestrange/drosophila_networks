@@ -1,5 +1,6 @@
 #include "adjacency.h"
 
+
 // function for reading file defined below class functions
 vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil);
 
@@ -84,7 +85,145 @@ void findCyclesDFS(int length) {
     
 }
 
-void findCyclesBFS(int length) {
+void adjMat::findCyclesBFS(int length) {
+
+    clock_t start = clock();
+    ofstream bfs_cycle_file("../outputs/BFS_cycles.txt");
+
+    // We look for cycles on each node
+    for(int i = 0; i < N; i++){
+        
+        // We will store paths in a queue
+        queue<vector<int>> q;
+        int root = i;
+        q.push({root});
+
+        // While the queue is nonempty, we check if a path is a cycle
+        while(q.size() != 0){
+
+           // Consider last node on path
+            vector<int> path = q.front();
+            q.pop();
+            int lastNode = path.back();
+
+            // If length is correct, check for cycle
+            if(path.size() == length){
+                for(int j = 0; j < list[lastNode].size(); j++){
+                    if(list[lastNode][j].first == root){
+                        cycles.push_back(path);
+                    }
+                }
+                continue;
+            }
+        
+            // If the path is not of full-length, create new path with
+            // each child and add new path to queue
+            for(int j = 0; j < list[lastNode].size(); j++){
+                int child = list[lastNode][j].first;
+
+                // Ensure the cycle is unique
+                bool isUnique = true;
+                if(child < root){
+                    isUnique = false;
+                }
+                
+                // Ensure node to be added is not already on path to prevent loops
+                if(isUnique){
+                    if((find(path.begin(), path.end(), child)) == path.end()){
+                        path.push_back(child);
+                        q.push(path);
+                        path.pop_back();
+                    }
+                }
+            }  
+        }
+    }
+
+    // Write cycles to file, verifying cycles vector is nonempty
+    if(cycles.size() == 0){
+        bfs_cycle_file << "No cycles of length " << length << " found." << endl;
+        bfs_cycle_file.close();
+        return;
+    }
+    for(int i = 0; i < cycles.size(); i++){
+        bfs_cycle_file << "{";
+        for(int j = 0; j < length; j++){
+            bfs_cycle_file << cycles[i][j] << " -> ";
+        }
+        bfs_cycle_file << cycles[i][0] << "}" << endl;
+    }
+
+    // Write runtime to file
+    clock_t end = clock();
+    clock_t duration = end - start;
+    bfs_cycle_file << "Total runtime for BFS: " << (float)duration/CLOCKS_PER_SEC;
+    bfs_cycle_file.close();
+
+    return;
+
+}
+
+void adjMat::findShortestPath(int source, int destination){
+    
+    if(max(source, destination) > N || min(source, destination) < 0){
+        cout << "Invalid neuron selection\n";
+        return;
+    }
+
+    // Nodes to be visited
+    queue<int> q;
+
+    // Keep track of path we have taken
+    map<int,int> parent;
+
+    // Avoid revisiting node
+    vector<bool> visited(N, false);
+
+    q.push(source);
+    visited[source] = true;
+
+    int current;
+    while(q.size() != 0){
+
+        // Check if path is complete
+        current = q.front();
+        q.pop();
+        visited[current] = true;
+        
+        // If destination node is found, reconstruct path
+        if(current == destination){
+            
+            vector<int> path;
+            int parentNode = parent[current];
+            while(parentNode != source){
+                path.push_back(parentNode);
+                parentNode = parent[parentNode];
+            }
+            cout << "Minimal path from " << source << " to " << destination << ":\n";
+            cout << source << " -> ";
+            for(int i = path.size()-1; i >= 0; i--){
+                cout << path[i] << "-> ";
+            }
+            cout << destination << endl;
+
+            return;
+
+        }
+        
+        // If not, add all children of current node to queue
+        int child;
+        for(int i = 0; i < list[current].size(); i++){
+            child = list[current][i].first;
+            if(!visited[child]){
+                visited[child] = true;
+                parent[child] = current;
+                q.push(child);
+            }
+        }
+    }
+
+    cout << "No path exists between " << source << "and " << destination << endl;
+    return;
 
 }
 

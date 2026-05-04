@@ -6,6 +6,8 @@
 #include <sstream>
 #include <fstream>
 #include <map>
+#include <queue>
+#include <ctime>
 
 using namespace std;
 
@@ -32,6 +34,7 @@ class adjMat {
         void printList();
         void findCyclesDFS(int); // records cycles of given length using DFS
         void findCyclesBFS(int); // records cycles of given length using BFS
+        void findShortestPath(int, int); // finds shortest path between two nodes
         void prettyPrint();
 
 };
