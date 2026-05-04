@@ -14,7 +14,7 @@ int main(int argc, char** argv){
 
     object.printList();
 
-    //object.findShortestPath(0,4);
+    object.findShortestPath(0,4);
     
     object.findCyclesBFS(3);
 
