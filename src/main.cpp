@@ -12,7 +12,7 @@ int main(int argc, char** argv){
 
     object.makeList(connections);
 
-    object.printList();
+    // object.printList();
 
     object.findShortestPath(0,4);
     
