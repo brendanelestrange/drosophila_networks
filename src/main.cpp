@@ -40,7 +40,7 @@ int main(int argc, char** argv){
         cin >> source;
     }
     while(destination < 0 || destination > 11021){
-        cout << "Please enter a destination neuron: (0-11021): ";
+        cout << "Please enter a destination neuron (0-11021): ";
         cin >> destination;
     }
     object.findShortestPath(source, destination);
