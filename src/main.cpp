@@ -17,8 +17,6 @@ int main(int argc, char** argv){
 
     object.makeList(connections);
 
-    object.printList();
-
     cout << "\nThe full list of neurons in region GNG has been printed to adj_list.txt in the following format:\n";
     cout << "Root Node : {neighbor, number of synapses}\n\n";
 
@@ -29,6 +27,8 @@ int main(int argc, char** argv){
     }
     object.findCyclesBFS(cycleLength);
     cout << "Cycles of length " << cycleLength << " found using BFS printed to BFS_cycles.txt\n\n";
+    object.findCyclesDFS(cycleLength);
+    cout << "Cycles of length " << cycleLength << " found using DFS printed to DFS_cycle.txt\n\n";
     // object.findCyclesDFS(cycleLength);
     // cout << "Cycles of length " << cycleLength << " found using DFS printed to DFS_cycles.txt";
 
