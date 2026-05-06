@@ -206,19 +206,19 @@ void adjMat::findCyclesBFS(int length) {
                 int child = list[lastNode][j].first;
 
                 // don't need to ensure unique cycle since graph is directed.
-                // bool isUnique = true;
-                // if(child < root){
-                //     isUnique = false;
-                // }
+                bool isUnique = true;
+                if(child < root){
+                    isUnique = false;
+                }
                 
                 // Ensure node to be added is not already on path to prevent loops
-                // if(isUnique){
-                if((find(path.begin(), path.end(), child)) == path.end()){
-                    path.push_back(child);
-                    q.push(path);
-                    path.pop_back();
-                }
-                // }  
+                if(isUnique){
+                    if((find(path.begin(), path.end(), child)) == path.end()){
+                        path.push_back(child);
+                        q.push(path);
+                        path.pop_back();
+                    }
+                }  
             }  
         }
     }
