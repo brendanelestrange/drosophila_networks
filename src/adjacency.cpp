@@ -204,15 +204,10 @@ void adjMat::findCyclesBFS(int length) {
             // each child and add new path to queue
             for(int j = 0; j < list[lastNode].size(); j++){
                 int child = list[lastNode][j].first;
-
-                // don't need to ensure unique cycle since graph is directed.
-                bool isUnique = true;
-                if(child < root){
-                    isUnique = false;
-                }
                 
-                // Ensure node to be added is not already on path to prevent loops
-                if(isUnique){
+                // Ensure cycle is unique
+                if(child > root){
+                    // Ensure node to be added is not already on path to prevent loops
                     if((find(path.begin(), path.end(), child)) == path.end()){
                         path.push_back(child);
                         q.push(path);
