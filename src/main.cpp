@@ -29,8 +29,6 @@ int main(int argc, char** argv){
     cout << "Cycles of length " << cycleLength << " found using BFS printed to BFS_cycles.txt\n\n";
     object.findCyclesDFS(cycleLength);
     cout << "Cycles of length " << cycleLength << " found using DFS printed to DFS_cycle.txt\n\n";
-    // object.findCyclesDFS(cycleLength);
-    // cout << "Cycles of length " << cycleLength << " found using DFS printed to DFS_cycles.txt";
 
     int source = -1;
     int destination = -1;

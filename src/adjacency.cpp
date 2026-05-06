@@ -128,7 +128,7 @@ void adjMat::findCyclesDFS(int length) {
     
     clock_t start  = clock();
 
-    ofstream dfs_cycle_file("../outputs/DFS_cycles.txt");
+    ofstream dfs_cycle_file("./outputs/DFS_cycles.txt");
     
     // data structure is a deque :)))
     deque<Cycle> all_cycles;
@@ -223,12 +223,18 @@ void adjMat::findCyclesBFS(int length) {
         }
     }
 
+    // Write runtime to file
+    clock_t end = clock();
+    clock_t duration = end - start;
+    bfs_cycle_file << "Total runtime for BFS: " << (float)duration/CLOCKS_PER_SEC << endl;
+
     // Write cycles to file, verifying cycles vector is nonempty
     if(cycles.size() == 0){
         bfs_cycle_file << "No cycles of length " << length << " found." << endl;
         bfs_cycle_file.close();
         return;
     }
+
     for(int i = 0; i < cycles.size(); i++){
         bfs_cycle_file << "{";
         for(int j = 0; j < length; j++){
@@ -237,19 +243,15 @@ void adjMat::findCyclesBFS(int length) {
         bfs_cycle_file << cycles[i][0] << "}" << endl;
     }
 
-    // Write runtime to file
-    clock_t end = clock();
-    clock_t duration = end - start;
-    bfs_cycle_file << "Total runtime for BFS: " << (float)duration/CLOCKS_PER_SEC;
     bfs_cycle_file.close();
 
     return;
-
 }
 
 // implemented by matt bales
 void adjMat::findShortestPath(int source, int destination){
     
+
     if(max(source, destination) > N || min(source, destination) < 0){
         cout << "Invalid neuron selection\n";
         return;
