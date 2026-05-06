@@ -1,0 +1,40 @@
+COSC 202 Project - Drosophila Networks
+By Matt and Brendan
+
+
+*Task/Time Tracking*
+
+
+Team Tasks:
+* Create deque data structure to go through matrix or list and find cycles
+
+
+Tasks Matt:
+* 3.5 hours writing BFS algorithm for arbitrary n-cycles
+* 2 hours writing BFS shortest path algorithm
+* 1 hour writing report
+
+
+Tasks Brendan: 
+* 1.5 hours weighted adjacency list conversion and making the file structure a bit easier to navigate.
+* 3.5 hours implementing the DFS algorithm for finding arbitrary n size cycles.
+* 1 hours cleaning up README and adding to the written report.
+
+
+________________
+
+
+Debrief on final project: 
+* What went well?
+   * I think overall the project was really exciting and interesting. Both of us knew a bit about graph theory and so utilizing it in a project was incredibly interesting overall. 
+   * The FlyWire codex is an incredible project on the cutting edge of neuroscience and computer science. I think it is great that the scientists behind the project make their data publicly available and encourage other researchers to utilize it. I enjoyed brainstorming ways to use the data to employ some concepts from this class and others.
+   * As discussed below, the BFS algorithm is a poor choice for finding cycles. When I realized this, I sought out tasks that BFS is well-suited for. I found that BFS is optimal for finding the shortest path between two points in a graph, so I implemented a function to do so, which I had not intended to do. This was a great learning experience, as it illustrated the strengths and limitations of the algorithm.
+   * We used Git to work collaboratively on this project, which I (Matt), had never used before. I had always been a bit intimidated by Git, but the learning curve wasn’t as bad as I thought it would be, and its benefits are obvious when working on a team.
+   * Writing our results to text files was a good practice, as most labs we have completed thus far write results to the terminal. Since our dataset was so large, it was more practical to write to a file.
+   * I had Gemini help write a Makefile for the program because the compilation command was cumbersome. Makefiles always seemed a bit mysterious to me, but implementing my own demystified them a bit.
+* What went less well?
+   * Upon writing the BFS algorithm for cycles, I realized that it was inherently inefficient, especially with memory use. DFS is the more intuitive algorithm for this use case, and I think that one can often use their intuition when picking the right algorithm for a task.
+   * We had intended to use deques when implementing our algorithms, but as I wrote the BFS algorithms, I realized that a queue was sufficient. Data was only added to the end of the queue, and it was processed in a FIFO manner. A deque is unnecessary for this use case, so a simple queue was the more efficient structure.
+   * However for DFS deques were necessary as they were implemented in a way that they still used the edge weights.
+* Discretionary points
+   * We tried to challenge ourselves with this project by integrating concepts from this class and graph theory. Though our program will not lead to any scientific breakthroughs, we gained experience loading and manipulating a large dataset from a groundbreaking project. We embraced the opportunity to implement concepts learned from this course in a project that we find interesting.

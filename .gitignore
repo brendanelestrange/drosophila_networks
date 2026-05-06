@@ -1,4 +1,4 @@
 connections_princeton.csv
 *.o
 *.out
-*.txt
+outputs/*.txt
