@@ -11,6 +11,11 @@
 
 using namespace std;
 
+struct Cycle {
+    vector<pair<int,int>> cycle;
+    int total_weight;
+};
+
 struct connectionStruct{
     int pre_root;
     int post_root;
@@ -32,6 +37,7 @@ class adjMat {
         void makeMatrix(vector<connectionStruct> &connections);
         void makeList(vector<connectionStruct> &connections);
         void printList();
+        void dfsHelper(int, int, int, vector<pair<int,int>> &, vector<bool> &, int, deque<Cycle> &);
         void findCyclesDFS(int); // records cycles of given length using DFS
         void findCyclesBFS(int); // records cycles of given length using BFS
         void findShortestPath(int, int); // finds shortest path between two nodes

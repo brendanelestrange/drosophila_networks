@@ -1,15 +1,22 @@
 #include "adjacency.h"
 
 
+// used in DFS implementation for keeping track of cycles.
+
+
 // function for reading file defined below class functions
 vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil);
 
+// implemented by brendan lestrange
 adjMat::adjMat(vector<connectionStruct> &connections) { 
     N = remapNodes(connections);
+    // initializes the matrix, but doesn't make it
     mat.resize(N, vector<int>(N, 0));
+    // initializes the list, but doesn't make it
     list.resize(N, vector<pair<int,int>>());
 }
 
+// implemented by brendan lestrange
 int adjMat::remapNodes(vector<connectionStruct> &connections) {
     // get all nodes
     vector<int> nodes;
@@ -44,6 +51,7 @@ int adjMat::remapNodes(vector<connectionStruct> &connections) {
     return count;
 }; 
 
+// implemented by brendan lestrange
 void adjMat::makeMatrix(vector<connectionStruct> &connections) {
     
     for (int i = 0; i < connections.size(); i++) { 
@@ -54,6 +62,7 @@ void adjMat::makeMatrix(vector<connectionStruct> &connections) {
 
 }
 
+// implemented by brendan lestrange
 void adjMat::makeList(vector<connectionStruct> &connections) {
     for (int i = 0; i < connections.size(); i++) {
         int source = connections[i].pre_root;
@@ -64,6 +73,7 @@ void adjMat::makeList(vector<connectionStruct> &connections) {
 }
 
 // prints list and also makes txt file (bc full list can't load in terminal)
+// implemented by brendan lestrange
 void adjMat::printList(){ 
     // also saves to txt
     ofstream file("./outputs/adj_list.txt");
@@ -82,10 +92,83 @@ void adjMat::printList(){
 }
 
 
-void findCyclesDFS(int length) {
-    
+void adjMat::dfsHelper(int node, int root, int length, vector<pair<int,int>> &path, vector<bool> &visited, int weight, deque<Cycle> &cycles) {
+    if (path.size() == length) {
+        for(auto& neighbor : list[node]) {
+            int child = neighbor.first;
+            int edge_weight = neighbor.second;
+            if (child == root) {
+                Cycle c;
+                c.cycle = path;
+                c.total_weight = weight + edge_weight;
+                cycles.push_back(c);
+            }
+        }
+        return;
+    }
+    else {
+        for (auto & neighbor : list[node]) {
+            if (visited[neighbor.first] == false && neighbor.first >= root) {
+                path.push_back({neighbor.first, neighbor.second});
+                weight += neighbor.second;
+                visited[neighbor.first] = true;
+                dfsHelper(neighbor.first, root, length, path, visited, weight, cycles);
+                path.pop_back();
+                weight -= neighbor.second;
+                visited[neighbor.first] = false;
+            }
+        }
+    }
 }
 
+// lowkey had to dig into the weeds to get this algorithm!
+// citation: https://doi.org/10.1137/0201010
+// implemented by brendan lestrange
+void adjMat::findCyclesDFS(int length) {
+    
+    clock_t start  = clock();
+
+    ofstream dfs_cycle_file("../outputs/DFS_cycles.txt");
+    
+    // data structure is a deque :)))
+    deque<Cycle> all_cycles;
+    
+    for (int i = 0; i < N; i++) {
+        vector<pair<int, int>> path;
+        vector<bool> visited(N, false);
+        int current_weight = 0;
+
+        path.push_back({i, 0});
+        visited[i] = true;
+
+        dfsHelper(i, i, length, path, visited, current_weight, all_cycles);
+
+        visited[i] = false;
+    }
+
+    clock_t end = clock();
+
+    clock_t duration = end - start;
+
+    dfs_cycle_file << "Total runtime for DFS: " << (float)duration/CLOCKS_PER_SEC << endl;
+
+    if(all_cycles.size() == 0){
+        dfs_cycle_file << "No cycles of length " << length << " found." << endl;
+        dfs_cycle_file.close();
+        return;
+    }
+
+    for(int i = 0; i < all_cycles.size(); i++){
+        dfs_cycle_file << "{";
+        for(int j = 0; j < length; j++){
+            dfs_cycle_file << all_cycles[i].cycle[j].first << " -> ";
+        }
+        dfs_cycle_file << all_cycles[i].cycle[0].first << "} Total edge weight: " << all_cycles[i].total_weight << endl;     
+    }
+    dfs_cycle_file.close();
+}
+
+// implemented by matt bales
 void adjMat::findCyclesBFS(int length) {
 
     clock_t start = clock();
@@ -122,20 +205,20 @@ void adjMat::findCyclesBFS(int length) {
             for(int j = 0; j < list[lastNode].size(); j++){
                 int child = list[lastNode][j].first;
 
-                // Ensure the cycle is unique
-                bool isUnique = true;
-                if(child < root){
-                    isUnique = false;
-                }
+                // don't need to ensure unique cycle since graph is directed.
+                // bool isUnique = true;
+                // if(child < root){
+                //     isUnique = false;
+                // }
                 
                 // Ensure node to be added is not already on path to prevent loops
-                if(isUnique){
-                    if((find(path.begin(), path.end(), child)) == path.end()){
-                        path.push_back(child);
-                        q.push(path);
-                        path.pop_back();
-                    }
+                // if(isUnique){
+                if((find(path.begin(), path.end(), child)) == path.end()){
+                    path.push_back(child);
+                    q.push(path);
+                    path.pop_back();
                 }
+                // }  
             }  
         }
     }
@@ -164,6 +247,7 @@ void adjMat::findCyclesBFS(int length) {
 
 }
 
+// implemented by matt bales
 void adjMat::findShortestPath(int source, int destination){
     
     if(max(source, destination) > N || min(source, destination) < 0){
