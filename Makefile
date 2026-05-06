@@ -7,7 +7,7 @@ SRC_DIR = src
 OUT_DIR = run_code
 
 # Target executable name
-TARGET = $(OUT_DIR)/graph_test
+TARGET = $(OUT_DIR)/graph_search
 
 # Build rule
 all:

@@ -76,18 +76,19 @@ void adjMat::makeList(vector<connectionStruct> &connections) {
 // implemented by brendan lestrange
 void adjMat::printList(){ 
     // also saves to txt
-    ofstream file("../outputs/adj_list.txt");
+    ofstream file("./outputs/adj_list.txt");
     for (int i = 0; i < list.size(); i++) {
-        cout << i << " : ";
+        //cout << i << " : ";
         file << i << " : "; 
         for (int j = 0; j < list[i].size(); j++) {
-            cout << "{"<<list[i][j].first<<", "<<list[i][j].second<<"} ";
+            //cout << "{"<<list[i][j].first<<", "<<list[i][j].second<<"} ";
             file << "{"<<list[i][j].first<<", "<<list[i][j].second<<"} ";
         }
-        cout << endl;
+        //cout << endl;
         file << endl;
     }
     file.close();
+    //cout << N << endl;
 }
 
 
@@ -171,7 +172,7 @@ void adjMat::findCyclesDFS(int length) {
 void adjMat::findCyclesBFS(int length) {
 
     clock_t start = clock();
-    ofstream bfs_cycle_file("../outputs/BFS_cycles.txt");
+    ofstream bfs_cycle_file("./outputs/BFS_cycles.txt");
 
     // We look for cycles on each node
     for(int i = 0; i < N; i++){
@@ -288,7 +289,7 @@ void adjMat::findShortestPath(int source, int destination){
             for(int i = path.size()-1; i >= 0; i--){
                 cout << path[i] << "-> ";
             }
-            cout << destination << endl;
+            cout << destination << "\n\n";
 
             return;
 
@@ -306,7 +307,7 @@ void adjMat::findShortestPath(int source, int destination){
         }
     }
 
-    cout << "No path exists between " << source << "and " << destination << endl;
+    cout << "No path exists between " << source << " and " << destination << endl;
     return;
 
 }
