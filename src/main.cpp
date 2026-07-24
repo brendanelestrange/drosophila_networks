@@ -3,9 +3,15 @@
  * Matt Bales and Brendan LeStrange                                      *
  * Description: This program searches for cyclic neural connections in   *
  * the fruit fly brain, as well as the shortest path between two neurons *
+ * 
+ * updated after class by brendan lestrange for visualization
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+// going to make an interface for this so that its easier to navigate possible
+// commands
+
 #include "adjacency.h"
+#include "utils.h"
 
 using namespace std;
 
@@ -25,6 +31,7 @@ int main(int argc, char** argv){
         cout << "Please enter desired cycle length (integer > 2): ";
         cin >> cycleLength;
     }
+
     object.findCyclesBFS(cycleLength);
     cout << "Cycles of length " << cycleLength << " found using BFS printed to BFS_cycles.txt\n\n";
     object.findCyclesDFS(cycleLength);
@@ -42,6 +49,18 @@ int main(int argc, char** argv){
         cin >> destination;
     }
     object.findShortestPath(source, destination);
+
+    unsigned int top_k;
+
+    cout << "now we are finding the k heaviest cycle in the dataset" << endl;
+    cout << "please enter the k heaviest cycle interesting to you: ";
+    cin >> top_k;
+
+    cout << "k heaviest cycle in DFS" << endl;
+    findKHeaviestCycle("DFS", top_k, true);
+
+    cout << "k heaviest cycle in BFS" << endl;
+    findKHeaviestCycle("BFS", top_k, true);
 
     return 0;
 }

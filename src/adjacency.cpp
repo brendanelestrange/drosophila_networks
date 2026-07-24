@@ -159,11 +159,11 @@ void adjMat::findCyclesDFS(int length) {
     }
 
     for(int i = 0; i < all_cycles.size(); i++){
-        dfs_cycle_file << "{";
+        dfs_cycle_file << "{ ";
         for(int j = 0; j < length; j++){
             dfs_cycle_file << all_cycles[i].cycle[j].first << " -> ";
         }
-        dfs_cycle_file << all_cycles[i].cycle[0].first << "} Total edge weight: " << all_cycles[i].total_weight << endl;     
+        dfs_cycle_file << all_cycles[i].cycle[0].first << " } Total edge weight: " << all_cycles[i].total_weight << endl;     
     }
     dfs_cycle_file.close();
 }
@@ -174,47 +174,62 @@ void adjMat::findCyclesBFS(int length) {
     clock_t start = clock();
     ofstream bfs_cycle_file("./outputs/BFS_cycles.txt");
 
+    // Store found cycles along with their accumulated edge weight
+    deque<Cycle> all_cycles;
+
     // We look for cycles on each node
     for(int i = 0; i < N; i++){
-        
-        // We will store paths in a queue
-        queue<vector<int>> q;
+
+        // We will store paths (with running edge weight) in a queue
+        queue<Cycle> q;
         int root = i;
-        q.push({root});
+        Cycle start_path;
+        start_path.cycle.push_back({root, 0});
+        start_path.total_weight = 0;
+        q.push(start_path);
 
         // While the queue is nonempty, we check if a path is a cycle
         while(q.size() != 0){
 
            // Consider last node on path
-            vector<int> path = q.front();
+            Cycle path = q.front();
             q.pop();
-            int lastNode = path.back();
+            int lastNode = path.cycle.back().first;
 
             // If length is correct, check for cycle
-            if(path.size() == length){
+            if(path.cycle.size() == length){
                 for(int j = 0; j < list[lastNode].size(); j++){
                     if(list[lastNode][j].first == root){
-                        cycles.push_back(path);
+                        // Close the cycle: add the edge weight back to root
+                        Cycle c = path;
+                        c.total_weight += list[lastNode][j].second;
+                        all_cycles.push_back(c);
                     }
                 }
                 continue;
             }
-        
+
             // If the path is not of full-length, create new path with
             // each child and add new path to queue
             for(int j = 0; j < list[lastNode].size(); j++){
                 int child = list[lastNode][j].first;
-                
+                int edge_weight = list[lastNode][j].second;
+
                 // Ensure cycle is unique
                 if(child > root){
                     // Ensure node to be added is not already on path to prevent loops
-                    if((find(path.begin(), path.end(), child)) == path.end()){
-                        path.push_back(child);
-                        q.push(path);
-                        path.pop_back();
+                    bool on_path = false;
+                    for(int k = 0; k < path.cycle.size(); k++){
+                        if(path.cycle[k].first == child){ on_path = true; break; }
                     }
-                }  
-            }  
+                    if(!on_path){
+                        Cycle next_path = path;
+                        next_path.cycle.push_back({child, edge_weight});
+                        next_path.total_weight += edge_weight;
+                        q.push(next_path);
+                    }
+                }
+            }
         }
     }
 
@@ -223,19 +238,19 @@ void adjMat::findCyclesBFS(int length) {
     clock_t duration = end - start;
     bfs_cycle_file << "Total runtime for BFS: " << (float)duration/CLOCKS_PER_SEC << endl;
 
-    // Write cycles to file, verifying cycles vector is nonempty
-    if(cycles.size() == 0){
+    // Write cycles to file, verifying cycles deque is nonempty
+    if(all_cycles.size() == 0){
         bfs_cycle_file << "No cycles of length " << length << " found." << endl;
         bfs_cycle_file.close();
         return;
     }
 
-    for(int i = 0; i < cycles.size(); i++){
-        bfs_cycle_file << "{";
+    for(int i = 0; i < all_cycles.size(); i++){
+        bfs_cycle_file << "{ ";
         for(int j = 0; j < length; j++){
-            bfs_cycle_file << cycles[i][j] << " -> ";
+            bfs_cycle_file << all_cycles[i].cycle[j].first << " -> ";
         }
-        bfs_cycle_file << cycles[i][0] << "}" << endl;
+        bfs_cycle_file << all_cycles[i].cycle[0].first << " } Total edge weight: " << all_cycles[i].total_weight << endl;
     }
 
     bfs_cycle_file.close();

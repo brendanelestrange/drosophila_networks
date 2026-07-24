@@ -2,3 +2,5 @@ connections_princeton.csv
 *.o
 *.out
 outputs/*.txt
+.vscode
+libraries

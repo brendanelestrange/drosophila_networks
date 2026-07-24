@@ -31,7 +31,6 @@ class adjMat {
         int N;
         vector<vector<pair<int,int>>> list; // stores adj list
         vector<vector<int>> mat; // stores adj matrix
-        vector<vector<int>> cycles; // stores vertex values of cycles
     public:
         adjMat(vector<connectionStruct> &connections);
         int remapNodes(vector<connectionStruct> &connections);
