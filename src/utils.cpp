@@ -16,7 +16,7 @@ void maxHeapify(vector<pair<int,int>> &arr, int i, int n);
 pair<int,int> extractMax(vector<pair<int,int>> &vec);
 // vector of pairs of the cycle (vector<int>) and index + weight of cycle
 pair<vector<int>, pair<int,int>> getCycle(pair<int,int> &max, string file, bool print);
-
+void saveHeapify(vector<pair<int,int>> &weights, string algorithm);
 
 pair<vector<int>, pair<int,int>> findKHeaviestCycle(string algorithm, int top_k, bool print_){
     string file;
@@ -35,6 +35,7 @@ pair<vector<int>, pair<int,int>> findKHeaviestCycle(string algorithm, int top_k,
     for (int i = weights.size()/2 - 1; i >= 0; i--) {
         maxHeapify(weights, i, weights.size());
     }
+    // saveHeapify(weights, algorithm);
     pair<int, int> max;
     for (int i = 0; i < top_k; i++) {
         max = extractMax(weights);
@@ -103,6 +104,17 @@ void maxHeapify(vector<pair<int,int>> &arr, int i, int n) {
     }
 }
 
+void saveHeapify(vector<pair<int,int>> &weights, string algorithm) {
+    string file = "./outputs/weightsHeap" + algorithm + ".txt";
+    ofstream weightsHeap(file);
+
+    for (pair<int,int> weight : weights) {
+        weightsHeap << "index: " << weight.first << " weight: " << weight.second << endl; 
+    }
+
+    weightsHeap.close();
+}
+
 pair<int,int> extractMax(vector<pair<int,int>> &vec) {
     pair<int,int> r = vec[0];
     // cerr << r << " ";
@@ -114,7 +126,7 @@ pair<int,int> extractMax(vector<pair<int,int>> &vec) {
 }
 
 // taken from https://stackoverflow.com/questions/5207550/in-c-is-there-a-way-to-go-to-a-specific-line-in-a-text-file
-std::fstream& goToLine(std::fstream& file, unsigned int num){
+fstream& goToLine(fstream& file, unsigned int num){
     file.seekg(std::ios::beg);
     for(int i=0; i < num; ++i){
         file.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
@@ -180,6 +192,24 @@ vector<pair<vector<int>, pair<int, int>>> readInAllCycles(string file) {
         
     }  
     return cycles;
+}
+
+
+
+// unfinished code
+
+
+
+// node, vector of adjacent (node, weight)
+vector<pair<int, vector<pair<int,int>>>> getAdjacentNodes(string adjListFile, vector<int> vertices) {
+    vector<pair<int, vector<pair<int,int>>>> adjNodes;
+    fstream fin(adjListFile);
+    string line;
+    for (int vertex : vertices) {
+        goToLine(fin, vertex);
+        getline(fin, line);
+
+    }
 }
 
 // pair<int, vector<pair<int,int>>> readInAdjList(string file) {

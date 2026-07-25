@@ -1,14 +1,14 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
- * CS202 Capstone Project                                                *                                 
+ * Finding Cycles in the Drosphilia Brain                                *                                 
  * Matt Bales and Brendan LeStrange                                      *
  * Description: This program searches for cyclic neural connections in   *
  * the fruit fly brain, as well as the shortest path between two neurons *
- * 
- * updated after class by brendan lestrange for visualization
+ *                                                                       *
+ * Brendan has continued this project for the love of the game           *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 // going to make an interface for this so that its easier to navigate possible
-// commands
+// commands going in next commit
 
 #include "adjacency.h"
 #include "utils.h"
@@ -16,8 +16,9 @@
 using namespace std;
 
 int main(int argc, char** argv){
-
-    vector<connectionStruct> connections = readConnectionFile("./connections_princeton.csv", "GNG");
+    
+    
+    vector<connectionStruct> connections = readConnectionFile("./connections_princeton.csv", "GNG", "GABA");
 
     adjMat object(connections);
 
@@ -32,8 +33,8 @@ int main(int argc, char** argv){
         cin >> cycleLength;
     }
 
-    object.findCyclesBFS(cycleLength);
-    cout << "Cycles of length " << cycleLength << " found using BFS printed to BFS_cycles.txt\n\n";
+    // object.findCyclesBFS(cycleLength);
+    // cout << "Cycles of length " << cycleLength << " found using BFS printed to BFS_cycles.txt\n\n";
     object.findCyclesDFS(cycleLength);
     cout << "Cycles of length " << cycleLength << " found using DFS printed to DFS_cycle.txt\n\n";
 
@@ -59,8 +60,20 @@ int main(int argc, char** argv){
     cout << "k heaviest cycle in DFS" << endl;
     findKHeaviestCycle("DFS", top_k, true);
 
-    cout << "k heaviest cycle in BFS" << endl;
-    findKHeaviestCycle("BFS", top_k, true);
+    // cout << "k heaviest cycle in BFS" << endl;
+    // findKHeaviestCycle("BFS", top_k, true);
 
     return 0;
 }
+
+
+
+// original description below:
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
+ * CS202 Capstone Project                                                *                                 
+ * Matt Bales and Brendan LeStrange                                      *
+ * Description: This program searches for cyclic neural connections in   *
+ * the fruit fly brain, as well as the shortest path between two neurons *
+ *                                                                       *
+ * updated after class by brendan lestrange for visualization            *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */

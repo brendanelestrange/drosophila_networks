@@ -1,11 +1,9 @@
 #include "adjacency.h"
 
-
-// used in DFS implementation for keeping track of cycles.
-
+// need to do a subgraph methodology to
 
 // function for reading file defined below class functions
-vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil);
+vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil, string filter_nt);
 
 // implemented by brendan lestrange
 adjMat::adjMat(vector<connectionStruct> &connections) { 
@@ -91,7 +89,7 @@ void adjMat::printList(){
     //cout << N << endl;
 }
 
-
+//helper for recursion
 void adjMat::dfsHelper(int node, int root, int length, vector<pair<int,int>> &path, vector<bool> &visited, int weight, deque<Cycle> &cycles) {
     if (path.size() == length) {
         for(auto& neighbor : list[node]) {
@@ -325,7 +323,13 @@ void adjMat::findShortestPath(int source, int destination){
 }
 
 // csv reader (made by matt bales)
-vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil) {
+vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil, string filter_nt) {
+    
+    // faster than comparing string everytime
+    bool extraFilter;
+    if (filter_nt != "all") extraFilter = true;
+    else extraFilter = false;
+    
     //Open file as input filestream. Will parse using string stream
     ifstream fin(filename);
     string line;
@@ -357,9 +361,17 @@ vector<connectionStruct> readConnectionFile(string filename, string filter_neuro
         getline(ss, post_root, ',');
         getline(ss, neuropil, ',');
         getline(ss, weight_str, ',');
-        if (neuropil != filter_neuropil) {
-            continue;
+        getline(ss, nt_type, ',');
+        if (neuropil != filter_neuropil) continue;
+        
+        if (extraFilter) { // faster than comparing string everytime
+            if (nt_type != filter_nt) continue;
         }
+        else
+
+        // if (neuropil != filter_neuropil) {
+        //     continue;
+        // }
         //Change values for struct variables
         cs.pre_root = stoul(pre_root);
         cs.post_root = stoul(post_root);

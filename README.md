@@ -20,7 +20,7 @@ from the main directory and run the program using
 
 In the outputs you will find the run times at the beginning of the BFS and DFS txt files to evaluate performance.
 
-Follow the prompts in the terminal to conduct searches. Be advised that BFS stalls with cycles larger than 4 due to memory usage. Although, if you disable BFS cycle finding in main.cpp you can see that DFS can find 4 cycles. Though time complexity scales quickly.
+Follow the prompts in the terminal to conduct searches. Be advised that BFS stalls with cycles larger than 4 due to memory usage. Although, if you disable BFS cycle finding in main.cpp you can see that DFS can find 5 cycles. Though time complexity scales quickly.
 
 **MUST BE IN MAIN DIRECTORY FOR PROGRAM TO WORK PROPERLY!!**
 

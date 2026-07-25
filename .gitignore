@@ -1,6 +1,7 @@
 connections_princeton.csv
 *.o
 *.out
+*.zip
 outputs/*.txt
 .vscode
 libraries

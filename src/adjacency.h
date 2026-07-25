@@ -23,7 +23,8 @@ struct connectionStruct{
     // string neuropil; needed only for filtering
     ushort weight;
 };
-vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil);
+
+vector<connectionStruct> readConnectionFile(string filename, string filter_neuropil, string filter_nt);
 
 // adjacency matrix (made by brendan lestrange and matt)
 class adjMat {
