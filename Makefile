@@ -13,8 +13,8 @@ TARGET = $(OUT_DIR)/graph_search
 # Build rule
 all:
 	$(CXX) $(CXXFLAGS) -I$(GV)/include/graphviz \
-	$(SRC_DIR)/main.cpp $(SRC_DIR)/adjacency.cpp $(SRC_DIR)/visualization.cpp \
-	$(SRC_DIR)/utils.cpp \
+	$(SRC_DIR)/main.cpp $(SRC_DIR)/adjacency.cpp \
+	$(SRC_DIR)/visualization/visualization.cpp $(SRC_DIR)/utils.cpp \
 	-L$(GV)/lib -lgvc -lcgraph -lcdt \
 	-Wl,-rpath,@loader_path/../$(GV)/lib \
 	-o $(TARGET)
